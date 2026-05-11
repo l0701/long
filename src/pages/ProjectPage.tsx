@@ -10,6 +10,8 @@ const ProjectPage = () => {
   const [output, setOutput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [pyodide, setPyodide] = useState<any>(null)
+  const [pyodideLoading, setPyodideLoading] = useState(true)
+  const [pyodideError, setPyodideError] = useState('')
   const outputRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -23,20 +25,36 @@ const ProjectPage = () => {
   }, [id])
 
   useEffect(() => {
-    // 加载Pyodide
     const loadPyodide = async () => {
       try {
-        const pyodideModule = await import('pyodide')
-        const pyodideInstance = await pyodideModule.loadPyodide({
+        setPyodideLoading(true)
+        setPyodideError('')
+        
+        // 动态创建script标签加载Pyodide
+        const script = document.createElement('script')
+        script.src = 'https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js'
+        script.type = 'text/javascript'
+        
+        await new Promise((resolve, reject) => {
+          script.onload = resolve
+          script.onerror = reject
+          document.head.appendChild(script)
+        })
+
+        // @ts-ignore - pyodide is loaded globally
+        const pyodideInstance = await window.pyodide.loadPyodide({
           indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/"
         })
+        
         setPyodide(pyodideInstance)
         
-        // 安装pandas和其他必要的包
-        await pyodideInstance.loadPackage(['pandas', 'numpy', 'matplotlib'])
+        await pyodideInstance.loadPackage(['pandas', 'numpy'])
+        
+        setPyodideLoading(false)
       } catch (error) {
         console.error('Failed to load Pyodide:', error)
-        setOutput('加载Pyodide失败，请刷新页面重试。')
+        setPyodideError('加载Pyodide失败，请刷新页面重试。如果问题持续存在，请检查网络连接。')
+        setPyodideLoading(false)
       }
     }
 
@@ -53,20 +71,11 @@ const ProjectPage = () => {
     setOutput('')
 
     try {
-      // 重定向stdout到输出
-      pyodide.globals.set('console', {
-        log: (...args: any[]) => {
-          setOutput(prev => prev + args.map(arg => String(arg)).join(' ') + '\n')
-        }
-      })
-
-      // 执行代码
       await pyodide.runPythonAsync(code)
     } catch (error) {
       setOutput(prev => prev + `错误: ${String(error)}\n`)
     } finally {
       setIsLoading(false)
-      // 滚动到输出底部
       setTimeout(() => {
         if (outputRef.current) {
           outputRef.current.scrollTop = outputRef.current.scrollHeight
@@ -184,15 +193,27 @@ const ProjectPage = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
               <h3 className="font-medium text-gray-700">运行结果</h3>
+              {pyodideLoading && (
+                <span className="ml-auto text-sm text-blue-600">加载Pyodide中...</span>
+              )}
             </div>
             <div 
               ref={outputRef}
               className="flex-1 p-4 overflow-auto bg-gray-50 font-mono text-sm"
               style={{ height: '552px' }}
             >
-              {output || (
-                <div className="text-gray-400 italic">运行代码查看结果...</div>
+              {pyodideError && (
+                <div className="text-red-500">{pyodideError}</div>
               )}
+              {!pyodideError && pyodideLoading && (
+                <div className="text-blue-500">
+                  正在加载Python运行环境...<br/>
+                  这可能需要几秒钟时间，请耐心等待。
+                </div>
+              )}
+              {!pyodideError && !pyodideLoading && (output || (
+                <div className="text-gray-400 italic">运行代码查看结果...</div>
+              ))}
             </div>
           </div>
         </div>
