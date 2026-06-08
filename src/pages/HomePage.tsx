@@ -23,19 +23,49 @@ const HomePage = () => {
       {/* Hero Section */}
       <div className={`bg-gradient-to-r from-primary to-blue-700 text-white rounded-2xl p-12 mb-12 shadow-xl fade-in ${isVisible ? 'opacity-100' : 'opacity-0'}`} style={{ animationDelay: '0.1s' }}>
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Pandas数据分析训练项目</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">龙奕羽的数据分析学习平台</h1>
           <p className="text-xl mb-8 opacity-90">
-            从入门到进阶的10个精选实战项目，完全在浏览器中运行代码，让人从零开始掌握数据分析核心技能。
+            广东科学技术职业学院 · 商务数据分析与应用专业<br/>
+            从入门到进阶的10个精选实战项目，完全在浏览器中运行代码，掌握数据分析核心技能。
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
+            <Link to="/about" className="btn-primary bg-white text-primary px-6 py-3 rounded-md font-medium hover:bg-blue-50 transition-colors shadow-lg">
+              关于我
+            </Link>
             <Link to="/project/1" className="btn-primary bg-white text-primary px-6 py-3 rounded-md font-medium hover:bg-blue-50 transition-colors shadow-lg">
               开始学习
             </Link>
-            <Link to="/resources" className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-md font-medium hover:bg-white hover:text-primary transition-colors shadow-lg">
-              学习资源
-            </Link>
             <Link to="/quiz" className="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-6 py-3 rounded-md font-medium hover:bg-white/30 transition-colors shadow-lg">
               知识测试
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* About Card */}
+      <div className="bg-white rounded-xl shadow-lg p-8 mb-12 fade-in" style={{ animationDelay: '0.15s' }}>
+        <div className="flex flex-col md:flex-row items-center gap-6">
+          <div className="flex-shrink-0">
+            <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+              龙
+            </div>
+          </div>
+          <div className="flex-1 text-center md:text-left">
+            <h2 className="text-2xl font-bold mb-2">龙奕羽</h2>
+            <p className="text-gray-600 mb-3">广东科学技术职业学院 · 商务数据分析与应用专业</p>
+            <p className="text-gray-700 mb-4">
+              对数据分析和商业智能充满热情，致力于通过数据驱动的方法解决实际商业问题。系统学习了数据分析相关课程，包括Python编程、数据可视化、数据库管理等。
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Python编程 85%</span>
+              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">数据分析 80%</span>
+              <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">数据可视化 75%</span>
+              <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">SQL数据库 70%</span>
+            </div>
+          </div>
+          <div className="flex-shrink-0">
+            <Link to="/about" className="btn-primary bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity shadow-lg">
+              查看详情
             </Link>
           </div>
         </div>

@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
 
-  // 监听滚动事件
   useState(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10)
@@ -23,6 +22,10 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-6">
           <Link to="/" className="text-white hover:text-blue-100 transition-colors relative group">
             首页
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+          </Link>
+          <Link to="/about" className="text-white hover:text-blue-100 transition-colors relative group">
+            关于我
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
           </Link>
           <Link to="/resources" className="text-white hover:text-blue-100 transition-colors relative group">
