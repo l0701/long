@@ -180,7 +180,7 @@ const ProjectPage = () => {
           </span>
         </div>
         <p className="text-gray-600 mb-6 text-lg">{project.description}</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <div>
             <h3 className="text-lg font-semibold mb-3 flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -204,6 +204,77 @@ const ProjectPage = () => {
             <p className="text-gray-600">{project.instructions}</p>
           </div>
         </div>
+
+        {/* 学习内容 */}
+        {project.learningContent && project.learningContent.length > 0 && (
+          <div className="mb-8">
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              学习内容
+            </h3>
+            <div className="space-y-4">
+              {project.learningContent.map((content: any, index: number) => (
+                <div key={index} className="bg-blue-50 rounded-lg p-4">
+                  <h4 className="font-semibold text-blue-800 mb-2">{content.section}</h4>
+                  <p className="text-gray-700">{content.content}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 前置条件和后续建议 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {project.prerequisites && project.prerequisites.length > 0 && (
+            <div className="bg-yellow-50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold mb-3 flex items-center text-yellow-800">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                前置条件
+              </h3>
+              <ul className="list-disc list-inside text-gray-700 space-y-1">
+                {project.prerequisites.map((prereq: string, index: number) => (
+                  <li key={index}>{prereq}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {project.nextSteps && project.nextSteps.length > 0 && (
+            <div className="bg-green-50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold mb-3 flex items-center text-green-800">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+                后续学习
+              </h3>
+              <ul className="list-disc list-inside text-gray-700 space-y-1">
+                {project.nextSteps.map((step: string, index: number) => (
+                  <li key={index}>{step}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        {/* 测试按钮 */}
+        {project.quiz && project.quiz.length > 0 && (
+          <div className="flex justify-center">
+            <Link
+              to={`/quiz/${project.id}`}
+              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-md font-medium hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg"
+            >
+              <div className="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+                开始测试 - {project.quiz.length}道题目
+              </div>
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* Code Editor and Output */}

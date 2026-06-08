@@ -1,3 +1,11 @@
+export interface Question {
+  id: number
+  question: string
+  options: string[]
+  correctAnswer: number
+  explanation: string
+}
+
 export interface Project {
   id: string
   title: string
@@ -8,6 +16,13 @@ export interface Project {
   dataset: any
   instructions: string
   learningObjectives: string[]
+  learningContent?: {
+    section: string
+    content: string
+  }[]
+  prerequisites?: string[]
+  nextSteps?: string[]
+  quiz?: Question[]
 }
 
 export const projects: Project[] = [
@@ -73,6 +88,67 @@ print(df.iloc[0:2, 0:3])`,
       '学习如何创建DataFrame',
       '掌握基本的数据查看方法',
       '学习如何选择数据的行和列'
+    ],
+    learningContent: [
+      {
+        section: '1. 什么是DataFrame',
+        content: 'DataFrame是pandas的核心数据结构，可以看作是一个二维表格，由行和列组成。每列可以是不同的数据类型（数值、字符串、布尔值等）。DataFrame类似于Excel表格或SQL表。'
+      },
+      {
+        section: '2. 查看数据的基本方法',
+        content: 'head()：查看前n行，默认5行；tail()：查看后n行；info()：查看数据基本信息（非空值数量、数据类型等）；describe()：查看数值型列的统计信息。'
+      },
+      {
+        section: '3. 选择列',
+        content: 'df[\'列名\']：选择单列；df[[\'列名1\', \'列名2\']]：选择多列。注意：选择单列返回Series，选择多列返回DataFrame。'
+      },
+      {
+        section: '4. 选择行',
+        content: 'df[:n]：切片选择前n行；df.loc[行标签]：按标签选择；df.iloc[行索引]：按整数位置选择。'
+      },
+      {
+        section: '5. 同时选择行和列',
+        content: 'df.loc[行范围, 列列表]：按标签选择；df.iloc[行索引范围, 列索引范围]：按位置选择。这是最常用的数据选择方式。'
+      }
+    ],
+    prerequisites: ['了解Python基本语法'],
+    nextSteps: ['进入"数据清洗与预处理"项目'],
+    quiz: [
+      {
+        id: 1,
+        question: 'pandas中用于创建DataFrame的函数是？',
+        options: ['pd.createDataFrame()', 'pd.DataFrame()', 'pd.makeDataFrame()', 'pd.newDataFrame()'],
+        correctAnswer: 1,
+        explanation: '在pandas中，使用pd.DataFrame()函数来创建DataFrame对象。DataFrame是pandas的核心数据结构，用于存储表格数据。'
+      },
+      {
+        id: 2,
+        question: '下列哪个函数用于查看DataFrame的前5行数据？',
+        options: ['df.view()', 'df.head()', 'df.first()', 'df.top()'],
+        correctAnswer: 1,
+        explanation: 'df.head()函数用于查看DataFrame的前几行数据，默认显示前5行。类似的，df.tail()用于查看最后几行数据。'
+      },
+      {
+        id: 3,
+        question: '查看DataFrame基本信息的方法是？',
+        options: ['df.info()', 'df.describe()', 'df.summary()', 'df.details()'],
+        correctAnswer: 0,
+        explanation: 'df.info()用于查看DataFrame的基本信息，包括列名、非空值数量、数据类型等。df.describe()用于查看描述性统计信息。'
+      },
+      {
+        id: 4,
+        question: '选择DataFrame的单列数据的正确方式是？',
+        options: ['df{column}', 'df[column]', 'df->column', 'df::column'],
+        correctAnswer: 1,
+        explanation: '使用方括号df[column]可以选择DataFrame的单列数据，返回一个Series对象。选择多列可以用df[[col1, col2]]。'
+      },
+      {
+        id: 5,
+        question: '按位置选择数据的方法是？',
+        options: ['df.loc[]', 'df.iloc[]', 'df.pos[]', 'df.index[]'],
+        correctAnswer: 1,
+        explanation: 'df.iloc[]用于按整数位置选择数据，df.loc[]用于按标签（索引）选择数据。'
+      }
     ]
   },
   {
@@ -147,6 +223,67 @@ print(df_unique[(df_unique['salary'] < lower_bound) | (df_unique['salary'] > upp
       '掌握删除重复值的方法',
       '学习数据类型转换',
       '了解异常值检测的基本方法'
+    ],
+    learningContent: [
+      {
+        section: '1. 为什么需要数据清洗',
+        content: '真实世界的数据往往是不完美的，包含缺失值、重复值、异常值等问题。脏数据会导致分析结果不准确，数据清洗是数据分析的第一步，也是最重要的一步。'
+      },
+      {
+        section: '2. 缺失值检测与处理',
+        content: '使用isnull()或isna()检测缺失值，使用fillna()填充缺失值（可以用均值、中位数、众数或指定值），使用dropna()删除包含缺失值的行或列。选择填充还是删除取决于缺失值的比例和重要性。'
+      },
+      {
+        section: '3. 重复值处理',
+        content: '使用duplicated()检测重复行，使用drop_duplicates()删除重复行。重复数据会导致统计结果被高估，所以需要先去重。'
+      },
+      {
+        section: '4. 数据类型转换',
+        content: '使用astype()转换数据类型。常见转换：字符串转数字、数字转字符串、浮点转整数。数据类型正确与否会影响后续的计算和分析。'
+      },
+      {
+        section: '5. 异常值检测',
+        content: 'IQR方法：Q1-1.5IQR到Q3+1.5IQR之外的值视为异常值。异常值可能是数据输入错误，也可能是真实的极端值，需要根据业务知识判断。'
+      }
+    ],
+    prerequisites: ['完成"数据读取与基本操作"项目'],
+    nextSteps: ['进入"数据统计与描述性分析"项目'],
+    quiz: [
+      {
+        id: 1,
+        question: 'pandas中检测缺失值的函数是？',
+        options: ['df.missing()', 'df.isnull()', 'df.empty()', 'df.nan()'],
+        correctAnswer: 1,
+        explanation: 'df.isnull()或df.isna()用于检测DataFrame中的缺失值（NaN），返回一个布尔型DataFrame。'
+      },
+      {
+        id: 2,
+        question: '填充缺失值的函数是？',
+        options: ['df.fill()', 'df.fillna()', 'df.replace()', 'df.patch()'],
+        correctAnswer: 1,
+        explanation: 'df.fillna()用于填充DataFrame中的缺失值，可以指定填充值或使用前向/后向填充。'
+      },
+      {
+        id: 3,
+        question: '删除重复行的函数是？',
+        options: ['df.dedup()', 'df.remove_duplicates()', 'df.drop_duplicates()', 'df.unique()'],
+        correctAnswer: 2,
+        explanation: 'df.drop_duplicates()用于删除DataFrame中的重复行，保留第一次出现的行。'
+      },
+      {
+        id: 4,
+        question: '在IQR方法中，异常值边界是？',
+        options: ['Q1±1.5×IQR', 'Q3±1.5×IQR', 'Q1-1.5×IQR到Q3+1.5×IQR', 'Q1+1.5×IQR到Q3-1.5×IQR'],
+        correctAnswer: 2,
+        explanation: 'IQR方法中，异常值定义为小于Q1-1.5×IQR或大于Q3+1.5×IQR的值。'
+      },
+      {
+        id: 5,
+        question: '数据类型转换的函数是？',
+        options: ['df.convert()', 'df.cast()', 'df.astype()', 'df.change_type()'],
+        correctAnswer: 2,
+        explanation: 'df.astype()用于转换Series或DataFrame的数据类型，如df[\'col\'].astype(int)。'
+      }
     ]
   },
   {
@@ -217,6 +354,67 @@ print(f"价格峰度: {df['price'].kurt()}")`,
       '掌握分组统计的使用',
       '了解如何计算销售数据的各种指标',
       '学习偏度和峰度等统计概念'
+    ],
+    learningContent: [
+      {
+        section: '1. 描述性统计',
+        content: 'describe()函数可以生成描述性统计信息，包括计数、均值、标准差、最小值、25%分位数、中位数、75%分位数和最大值。这是了解数据分布的第一步。'
+      },
+      {
+        section: '2. 集中趋势',
+        content: 'mean()计算均值（平均值），median()计算中位数，mode()计算众数。均值受极端值影响大，中位数更稳健。'
+      },
+      {
+        section: '3. 离散程度',
+        content: 'std()计算标准差，var()计算方差，min()/max()计算最小/最大值，quantile()计算分位数。标准差越大，数据越分散。'
+      },
+      {
+        section: '4. 分布形态',
+        content: 'skew()计算偏度（衡量分布不对称性，正偏尾长在右，负偏尾长在左），kurt()计算峰度（衡量分布尖峭程度）。'
+      },
+      {
+        section: '5. 衍生变量',
+        content: '通过现有变量计算新变量，如销售额=数量×单价。衍生变量能提供更多业务洞察。'
+      }
+    ],
+    prerequisites: ['完成"数据清洗与预处理"项目'],
+    nextSteps: ['进入"数据分组与聚合"项目'],
+    quiz: [
+      {
+        id: 1,
+        question: '查看描述性统计的函数是？',
+        options: ['df.stats()', 'df.describe()', 'df.summary()', 'df.analyze()'],
+        correctAnswer: 1,
+        explanation: 'df.describe()用于生成DataFrame中数值型列的描述性统计信息，包括计数、均值、标准差、四分位数等。'
+      },
+      {
+        id: 2,
+        question: '计算中位数的函数是？',
+        options: ['df.median()', 'df.middle()', 'df.center()', 'df.mid()'],
+        correctAnswer: 0,
+        explanation: 'df.median()用于计算中位数，中位数是将数据排序后位于中间位置的值，不受极端值影响。'
+      },
+      {
+        id: 3,
+        question: '衡量数据分布不对称性的指标是？',
+        options: ['峰度', '偏度', '标准差', '方差'],
+        correctAnswer: 1,
+        explanation: '偏度（skewness）衡量数据分布的不对称性，正偏表示右侧尾长，负偏表示左侧尾长。'
+      },
+      {
+        id: 4,
+        question: '计算标准差的函数是？',
+        options: ['df.var()', 'df.std()', 'df.range()', 'df.diff()'],
+        correctAnswer: 1,
+        explanation: 'df.std()计算标准差，标准差是方差的平方根，衡量数据的离散程度。'
+      },
+      {
+        id: 5,
+        question: '计算众数的函数是？',
+        options: ['df.mean()', 'df.median()', 'df.mode()', 'df.average()'],
+        correctAnswer: 2,
+        explanation: 'df.mode()计算众数，众数是数据中出现次数最多的值。'
+      }
     ]
   },
   {
@@ -294,6 +492,71 @@ print(custom_agg)`,
       '学习多列分组和多级索引',
       '了解transform和filter方法的使用',
       '学习自定义聚合函数'
+    ],
+    learningContent: [
+      {
+        section: '1. groupby的基本思想',
+        content: 'split-apply-combine是数据分析的核心模式：先将数据按某个条件分组（split），然后对每组应用函数（apply），最后将结果合并（combine）。groupby就是实现这个模式的工具。'
+      },
+      {
+        section: '2. 分组统计',
+        content: 'agg()函数可以同时对不同列应用多种聚合函数，如mean、sum、std、count等。可以使用字典来指定每列要应用的聚合函数。'
+      },
+      {
+        section: '3. 多列分组',
+        content: '可以按多列分组，创建多级索引，提供更细粒度的数据视图。多级索引可以用来分析数据的交叉关系。'
+      },
+      {
+        section: '4. transform方法',
+        content: 'transform返回与原数据长度相同的结果，常用于添加分组统计列（如各部门平均工资），便于与原始数据进行比较。'
+      },
+      {
+        section: '5. filter方法',
+        content: 'filter根据分组的统计特性筛选整个组（如筛选平均绩效大于85的部门），这是选择符合条件组的有效方法。'
+      },
+      {
+        section: '6. 自定义聚合',
+        content: '可以定义自己的聚合函数，传递给agg()，灵活的自定义聚合让数据分析更强大。'
+      }
+    ],
+    prerequisites: ['完成"数据统计与描述性分析"项目'],
+    nextSteps: ['进入"数据合并与连接"项目'],
+    quiz: [
+      {
+        id: 1,
+        question: '分组操作的函数是？',
+        options: ['df.group()', 'df.groupby()', 'df.aggregate()', 'df.split()'],
+        correctAnswer: 1,
+        explanation: 'df.groupby()用于按指定的列或条件对数据进行分组，是数据分析的核心操作之一。'
+      },
+      {
+        id: 2,
+        question: '聚合操作的方法是？',
+        options: ['.apply()', '.aggregate()', '.agg()', '以上都是'],
+        correctAnswer: 3,
+        explanation: '.agg()是.aggregate()的简写，都可以用于聚合操作，.apply()也可以在某些场景下使用。'
+      },
+      {
+        id: 3,
+        question: '返回与原数据长度相同结果的方法是？',
+        options: ['.aggregate()', '.transform()', '.filter()', '.apply()'],
+        correctAnswer: 1,
+        explanation: '.transform()返回与原数据行数相同的结果，常用于将分组统计结果广播回原数据。'
+      },
+      {
+        id: 4,
+        question: '根据分组统计筛选整个组的方法是？',
+        options: ['.filter()', '.query()', '.select()', '.mask()'],
+        correctAnswer: 0,
+        explanation: '.filter()根据每组的统计特性（如均值、计数等）来筛选整个组，返回符合条件的组的所有行。'
+      },
+      {
+        id: 5,
+        question: 'groupby操作的三个阶段是？',
+        options: ['分组-计算-合并', '分割-应用-合并', '分类-处理-输出', '选择-处理-保存'],
+        correctAnswer: 1,
+        explanation: 'split-apply-combine（分割-应用-合并）是groupby操作的三个阶段：先分组，再应用函数，最后合并结果。'
+      }
     ]
   },
   {
